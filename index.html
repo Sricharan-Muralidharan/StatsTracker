@@ -56,57 +56,12 @@
         <h2>Current Player</h2>
         <select id="currentPlayerSelect" class="select"></select>
         <div id="currentPlayer" class="current-player">None selected</div>
+        <button id="undoStatBtn" class="btn btn-outline">Undo Last Stat</button>
 
         <h3>Record Stats</h3>
-        <div class="stat-sections">
-          <div class="stat-section">
-            <div class="section-title">Kill</div>
-            <div class="stat-buttons">
-              <button class="btn stat-btn" data-stat="kills">+ Kill</button>
-              <button class="btn stat-btn" data-stat="errors" data-error="attack">+ Attack Error</button>
-            </div>
-          </div>
-
-          <div class="stat-section">
-            <div class="section-title">Set (Assist)</div>
-            <div class="stat-buttons">
-              <button class="btn stat-btn" data-stat="assists" data-level="1">+ Set L1</button>
-              <button class="btn stat-btn" data-stat="assists" data-level="2">+ Set L2</button>
-              <button class="btn stat-btn" data-stat="assists" data-level="3">+ Set L3</button>
-              <button class="btn stat-btn" data-stat="errors" data-error="set">+ Set Error</button>
-            </div>
-          </div>
-
-          <div class="stat-section">
-            <div class="section-title">Ace</div>
-            <div class="stat-buttons">
-              <button class="btn stat-btn" data-stat="aces">+ Ace</button>
-            </div>
-          </div>
-
-          <div class="stat-section">
-            <div class="section-title">Block</div>
-            <div class="stat-buttons">
-              <button class="btn stat-btn" data-stat="blocks">+ Block</button>
-            </div>
-          </div>
-
-          <div class="stat-section">
-            <div class="section-title">Dig</div>
-            <div class="stat-buttons">
-              <button class="btn stat-btn" data-stat="digs" data-level="1">+ Dig L1</button>
-              <button class="btn stat-btn" data-stat="digs" data-level="2">+ Dig L2</button>
-              <button class="btn stat-btn" data-stat="digs" data-level="3">+ Dig L3</button>
-              <button class="btn stat-btn" data-stat="errors" data-error="dig">+ Dig Error</button>
-            </div>
-          </div>
-
-          <div class="stat-section">
-            <div class="section-title">Error</div>
-            <div class="stat-buttons">
-              <button class="btn stat-btn" data-stat="errors">+ Error</button>
-            </div>
-          </div>
+        <div class="action-selector">
+          <div id="actionButtons" class="action-buttons"></div>
+          <div id="levelButtons" class="level-buttons"></div>
         </div>
 
         <div class="hint">

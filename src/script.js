@@ -60,6 +60,9 @@ const opponentNameInput = document.getElementById("opponentName");
 const removeGameBtn = document.getElementById("removeGameBtn");
 const nextSetBtn = document.getElementById("nextSetBtn");
 const currentSetLabel = document.getElementById("currentSetLabel");
+const actionButtonsEl = document.getElementById("actionButtons");
+const levelButtonsEl = document.getElementById("levelButtons");
+const undoStatBtn = document.getElementById("undoStatBtn");
 
 const playerNameInput = document.getElementById("playerName");
 const playerNumberInput = document.getElementById("playerNumber");
@@ -70,6 +73,9 @@ const confirmCancelBtn = document.getElementById("confirmCancelBtn");
 const confirmOkBtn = document.getElementById("confirmOkBtn");
 
 let pendingConfirm = null;
+let currentAction = "attack";
+let showDetails = false;
+const actionStack = [];
 
 /* ===== Init ===== */
 renderAll();
@@ -94,35 +100,13 @@ confirmOkBtn.addEventListener("click", () => {
   if (typeof pendingConfirm === "function") pendingConfirm();
   closeConfirm();
 });
+undoStatBtn.addEventListener("click", undoLastStat);
 
-document.querySelectorAll(".stat-btn").forEach(btn => {
-  btn.addEventListener("click", () => handleStat(btn));
-});
+setupActionButtons();
 
 /* ===== Core Functions ===== */
-function handleStat(button) {
-  const game = getActiveGame();
-  const set = getActiveSet(game);
-  if (!game || !set || set.players.length === 0) return;
-
-  const statKey = button.dataset.stat;
-  const errorType = button.dataset.error;
-  if (errorType) {
-    const field = `${errorType}Errors`;
-    const player = set.players[game.selectedIndex];
-    player[field] = (player[field] || 0) + 1;
-    player.errors += 1;
-  } else {
-    set.players[game.selectedIndex][statKey] += 1;
-  }
-
-  // Save + re-render
-  saveState();
-  renderAll();
-
-  // Animate button and updated row
-  pulse(button);
-  highlightRow(game.selectedIndex);
+function handleStat(statKey, errorType, sourceButton) {
+  applyStat(statKey, errorType, sourceButton);
 }
 
 function requestAddPlayerConfirm() {
@@ -363,6 +347,150 @@ function renderSetLabel() {
   }
   const set = getActiveSet(game);
   currentSetLabel.textContent = set ? set.name : "Set -";
+}
+
+function setupActionButtons() {
+  renderActionButtons();
+  renderLevelButtons();
+}
+
+function renderActionButtons() {
+  actionButtonsEl.innerHTML = "";
+  if (showDetails) return;
+
+  const actions = [
+    { id: "attack", label: "Attack" },
+    { id: "set", label: "Set" },
+    { id: "dig", label: "Dig" },
+    { id: "serve", label: "Serve" },
+    { id: "block", label: "Block" },
+    { id: "error", label: "Error" }
+  ];
+
+  actions.forEach(action => {
+    const btn = document.createElement("button");
+    btn.className = "btn" + (action.id === currentAction ? " active" : "");
+    btn.textContent = action.label;
+    btn.addEventListener("click", () => {
+      currentAction = action.id;
+      showDetails = true;
+      renderActionButtons();
+      renderLevelButtons();
+    });
+    actionButtonsEl.appendChild(btn);
+  });
+}
+
+function renderLevelButtons() {
+  levelButtonsEl.innerHTML = "";
+  if (!showDetails) return;
+  const config = getLevelConfig(currentAction);
+  config.forEach(item => {
+    const btn = document.createElement("button");
+    btn.className = "btn";
+    btn.textContent = item.label;
+    btn.addEventListener("click", () => handleStat(item.statKey, item.errorType, btn));
+    levelButtonsEl.appendChild(btn);
+  });
+}
+
+function getLevelConfig(action) {
+  switch (action) {
+    case "attack":
+      return [
+        { label: "Kill", statKey: "kills" },
+        { label: "Spike", statKey: "kills" },
+        { label: "Tip", statKey: "kills" },
+        { label: "Attack Error", statKey: "errors", errorType: "attack" }
+      ];
+    case "set":
+      return [
+        { label: "Set L1", statKey: "assists" },
+        { label: "Set L2", statKey: "assists" },
+        { label: "Set L3", statKey: "assists" },
+        { label: "Set Error", statKey: "errors", errorType: "set" }
+      ];
+    case "dig":
+      return [
+        { label: "Dig L1", statKey: "digs" },
+        { label: "Dig L2", statKey: "digs" },
+        { label: "Dig L3", statKey: "digs" },
+        { label: "Dig Error", statKey: "errors", errorType: "dig" }
+      ];
+    case "serve":
+      return [
+        { label: "Ace", statKey: "aces" },
+        { label: "Serve Error", statKey: "errors" }
+      ];
+    case "block":
+      return [
+        { label: "Block", statKey: "blocks" },
+        { label: "Block Error", statKey: "errors" }
+      ];
+    default:
+      return [{ label: "Error", statKey: "errors" }];
+  }
+}
+
+function applyStat(statKey, errorType = null, sourceButton = null) {
+  const game = getActiveGame();
+  const set = getActiveSet(game);
+  if (!game || !set || set.players.length === 0) return;
+
+  const playerIndex = game.selectedIndex;
+  const player = set.players[playerIndex];
+  if (!player) return;
+
+  actionStack.push({
+    gameId: game.id,
+    setId: set.id,
+    playerIndex,
+    statKey,
+    errorType
+  });
+
+  if (errorType) {
+    const field = `${errorType}Errors`;
+    player[field] = (player[field] || 0) + 1;
+    player.errors += 1;
+  } else {
+    player[statKey] += 1;
+  }
+
+  saveState();
+  renderAll();
+
+  if (sourceButton) {
+    pulse(sourceButton);
+  }
+  highlightRow(playerIndex);
+
+  showDetails = false;
+  renderActionButtons();
+  renderLevelButtons();
+}
+
+function undoLastStat() {
+  const action = actionStack.pop();
+  if (!action) return;
+
+  const game = state.games.find(g => g.id === action.gameId);
+  if (!game) return;
+  const set = (game.sets || []).find(s => s.id === action.setId);
+  if (!set) return;
+  const player = set.players[action.playerIndex];
+  if (!player) return;
+
+  if (action.errorType) {
+    const field = `${action.errorType}Errors`;
+    player[field] = Math.max(0, (player[field] || 0) - 1);
+    player.errors = Math.max(0, (player.errors || 0) - 1);
+  } else {
+    player[action.statKey] = Math.max(0, (player[action.statKey] || 0) - 1);
+  }
+
+  saveState();
+  renderAll();
 }
 
 /* ===== Helpers ===== */
