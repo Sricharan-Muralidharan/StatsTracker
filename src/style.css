@@ -1,0 +1,410 @@
+/* ===== Base ===== */
+:root {
+  --bg: #0b1b2b;
+  --bg-accent: #0f2740;
+  --panel: #112b46;
+  --panel-2: #163a5e;
+  --text: #f2f6fa;
+  --muted: #b9c7d6;
+  --accent: #ffcc33;
+  --accent-2: #39d98a;
+  --danger: #ff5b5b;
+  --outline: rgba(255, 255, 255, 0.15);
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Impact", "Haettenschweiler", "Arial Narrow Bold", sans-serif;
+  background: radial-gradient(circle at top, #133251, var(--bg));
+  color: var(--text);
+}
+
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 18px;
+}
+
+/* ===== Top Bar ===== */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: linear-gradient(90deg, var(--panel), var(--panel-2));
+  padding: 16px 20px;
+  border-radius: 14px;
+  border: 1px solid var(--outline);
+}
+
+.title-wrap h1 {
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+.subtitle {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-family: "Trebuchet MS", sans-serif;
+  font-size: 0.95rem;
+}
+
+/* ===== Nav ===== */
+.nav-bar {
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: var(--text);
+  border: 1px solid var(--outline);
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-family: "Trebuchet MS", sans-serif;
+  background: #0d2237;
+}
+
+.nav-link.active {
+  border-color: var(--accent);
+  color: #1d1d1d;
+  background: var(--accent);
+}
+
+/* ===== Layout ===== */
+.grid {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 1.1fr 1.2fr 1.7fr;
+  gap: 16px;
+}
+
+.panel {
+  background: linear-gradient(180deg, var(--panel), #0f2338);
+  border-radius: 14px;
+  padding: 16px;
+  border: 1px solid var(--outline);
+}
+
+.panel h2, .panel h3 {
+  margin: 0 0 12px 0;
+  letter-spacing: 0.4px;
+}
+
+/* ===== Buttons ===== */
+.btn {
+  background: var(--accent);
+  color: #1d1d1d;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.06s ease, box-shadow 0.15s ease;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+}
+
+.btn:active { transform: translateY(2px); }
+
+.btn-outline {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--outline);
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: #1b0f0f;
+}
+
+/* ===== Player List ===== */
+.player-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.game-controls {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.field-label {
+  color: var(--muted);
+  font-family: "Trebuchet MS", sans-serif;
+  font-size: 0.85rem;
+}
+
+.select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--outline);
+  background: #0c1f33;
+  color: var(--text);
+  font-family: "Trebuchet MS", sans-serif;
+}
+
+.inline-fields {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.set-label {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--outline);
+  background: #0c1f33;
+  color: var(--text);
+  font-family: "Trebuchet MS", sans-serif;
+  text-align: center;
+}
+
+.player-controls input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--outline);
+  background: #0c1f33;
+  color: var(--text);
+  font-family: "Trebuchet MS", sans-serif;
+}
+
+.player-controls #addPlayerBtn,
+.player-controls #removePlayerBtn {
+  grid-column: span 2;
+}
+
+.player-list {
+  display: grid;
+  gap: 8px;
+}
+
+.player-card {
+  background: #0d2237;
+  border: 1px solid var(--outline);
+  padding: 10px 12px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: background 0.2s ease, border 0.2s ease;
+}
+
+.player-card.selected {
+  background: #1d3d5f;
+  border-color: var(--accent);
+}
+
+/* ===== Current Player ===== */
+.current-player {
+  font-size: 1.2rem;
+  padding: 12px;
+  background: #0d2237;
+  border-radius: 10px;
+  border: 1px solid var(--outline);
+}
+
+/* ===== Stats Sections ===== */
+.stat-sections {
+  display: grid;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.stat-section {
+  background: #0c1f33;
+  border: 1px solid var(--outline);
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.section-title {
+  color: var(--muted);
+  font-family: "Trebuchet MS", sans-serif;
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+  letter-spacing: 0.3px;
+}
+
+.stat-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+/* ===== Table ===== */
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: "Trebuchet MS", sans-serif;
+}
+
+thead th {
+  text-align: left;
+  padding: 10px;
+  background: #0f2a43;
+  border-bottom: 1px solid var(--outline);
+}
+
+tbody td {
+  padding: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+tbody tr.highlight {
+  background: rgba(57, 217, 138, 0.15);
+}
+
+tbody tr.selected-row {
+  outline: 2px solid var(--accent);
+}
+
+/* ===== Detailed Stats ===== */
+.detail-grid {
+  display: grid;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.filter-panel {
+  display: grid;
+  gap: 10px;
+}
+
+.filter-list {
+  display: grid;
+  gap: 8px;
+}
+
+.filter-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Trebuchet MS", sans-serif;
+}
+
+.stat-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.stat-card {
+  background: #0d2237;
+  border: 1px solid var(--outline);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.stat-card .label {
+  color: var(--muted);
+  font-family: "Trebuchet MS", sans-serif;
+  font-size: 0.85rem;
+}
+
+.stat-card .value {
+  font-size: 1.3rem;
+  margin-top: 6px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--outline);
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-family: "Trebuchet MS", sans-serif;
+}
+
+.detail-table th,
+.detail-table td {
+  white-space: nowrap;
+}
+
+.detail-table tfoot td {
+  background: #0f2a43;
+  font-weight: 700;
+}
+
+/* ===== Animations ===== */
+.pulse {
+  animation: pulse 0.35s ease;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+
+/* ===== Hints ===== */
+.hint {
+  margin-top: 12px;
+  color: var(--muted);
+  font-family: "Trebuchet MS", sans-serif;
+  font-size: 0.9rem;
+}
+
+/* ===== Modal ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(3, 9, 16, 0.7);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 50;
+}
+
+.modal-overlay.open {
+  display: flex;
+}
+
+.modal {
+  width: min(420px, 100%);
+  background: linear-gradient(180deg, var(--panel), #0f2338);
+  border: 1px solid var(--outline);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+}
+
+.modal p {
+  margin: 8px 0 16px;
+  color: var(--muted);
+  font-family: "Trebuchet MS", sans-serif;
+}
+
+.modal-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 980px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .stat-buttons {
+    grid-template-columns: 1fr;
+  }
+  .stat-cards {
+    grid-template-columns: 1fr;
+  }
+  .inline-fields {
+    grid-template-columns: 1fr;
+  }
+}

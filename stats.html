@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Volleyball Game Stats Tracker - Detailed</title>
+  <link rel="stylesheet" href="src/style.css"/>
+</head>
+<body>
+  <div class="app">
+    <!-- Top Section -->
+    <header class="top-bar">
+      <div class="title-wrap">
+        <h1>Volleyball Game Stats Tracker</h1>
+        <p class="subtitle">Detailed stats and efficiency</p>
+      </div>
+      <span class="badge" id="lastUpdated">Last updated: --</span>
+    </header>
+
+    <nav class="nav-bar" aria-label="Primary">
+      <a class="nav-link" href="index.html">Live Tracker</a>
+      <a class="nav-link active" href="stats.html">Detailed Stats</a>
+    </nav>
+
+    <main class="detail-grid">
+      <section class="panel filter-panel">
+        <h2>Game Filter</h2>
+        <label class="filter-item">
+          <input type="checkbox" id="allGamesToggle" checked />
+          All games
+        </label>
+        <div id="gameFilterList" class="filter-list"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Team Summary</h2>
+        <div class="stat-cards" id="summaryCards"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Detailed Player Stats</h2>
+        <div class="hint">
+          Eff% uses (good - errors) / (good + errors) for attacks, and good / (good + errors) for sets and digs.
+        </div>
+        <div class="table-wrap">
+          <table class="detail-table" id="detailedTable">
+            <thead>
+              <tr>
+                <th>Player</th>
+                <th>Kills</th>
+                <th>Attack Err</th>
+                <th>Attack Eff%</th>
+                <th>Assists</th>
+                <th>Set Err</th>
+                <th>Set Eff%</th>
+                <th>Aces</th>
+                <th>Blocks</th>
+                <th>Digs</th>
+                <th>Dig Err</th>
+                <th>Dig Eff%</th>
+                <th>Total Err</th>
+              </tr>
+            </thead>
+            <tbody id="detailedTableBody"></tbody>
+            <tfoot id="detailedTableFoot"></tfoot>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="src/stats.js"></script>
+</body>
+</html>
